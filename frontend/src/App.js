@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const axiosInstance = axios.create({
-  baseURL: '/api',
-});
-
 function App() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
@@ -14,30 +10,30 @@ function App() {
   }, []);
 
   const fetchTasks = async () => {
-    const response = await axiosInstance.get('/tasks');
+    const response = await axios.get('https://to-do-web-by15.onrender.com/api/tasks');
     setTasks(response.data);
   };
 
   const addTask = async () => {
     if (newTask) {
-      const response = await axiosInstance.post('/tasks', { text: newTask });
+      const response = await axios.post('https://to-do-web-by15.onrender.com/api/tasks', { text: newTask });
       setTasks([...tasks, response.data]);
       setNewTask('');
     }
   };
 
   const deleteTask = async (id) => {
-    await axiosInstance.delete(`/tasks/${id}`);
+    await axios.delete(`https://to-do-web-by15.onrender.com/api/tasks/${id}`);
     setTasks(tasks.filter((task) => task._id !== id));
   };
 
   const toggleCompletion = async (id) => {
-    const response = await axiosInstance.patch(`/tasks/${id}/completed`);
+    const response = await axios.patch(`https://to-do-web-by15.onrender.com/api/tasks/${id}/completed`);
     setTasks(tasks.map((task) => (task._id === id ? response.data : task)));
   };
 
   const updateTask = async (id, text) => {
-    const response = await axiosInstance.put(`/tasks/${id}`, { text });
+    const response = await axios.put(`https://to-do-web-by15.onrender.com/api/tasks/${id}`, { text });
     setTasks(tasks.map((task) => (task._id === id ? response.data : task)));
   };
 
